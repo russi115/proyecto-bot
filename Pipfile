@@ -7,6 +7,9 @@ verify_ssl = true
 
 [packages]
 discord-py = "*"
+"discord.py" = "*"
+django = "*"
+django-rest-framework = "*"
 
 [requires]
 python_version = "3.8"

@@ -4,7 +4,6 @@ import datetime
 from urllib import parse, request
 import re
 import os
-#from boto.s3.connection import S3Connection
  
 
 
@@ -104,7 +103,6 @@ async def my_message(message): pass
 bot.add_listener(my_message, 'busy_message')
 
 bot.run(os.getenv("TOKEN"))
-#bot.run(S3Connection(os.environ['TOKEN']))
 
 
 # https://discordapp.com/developers/applications/688292551211745280/oauth2s

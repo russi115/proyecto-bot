@@ -3,20 +3,10 @@ from discord.ext import commands
 import datetime
 from urllib import parse, request
 import re
+import os
 
-bot = commands.Bot(command_prefix='>', description="this is a helper bot")
+bot = commands.Bot(command_prefix='$', description="this is a helper bot")
 
-
-@bot.command()
-async def role(ctx):
-    print("roles:",ctx.author.roles)
-    list = ctx.author.roles[1].members
-    mention = ctx.author.roles[1].mention
-    await ctx.send(mention)
-
-    print("members:\n {} \n {}".format(list[0].name,list[1].name))
-    mention = list[0].mention
-    await ctx.send(mention)
 
 @bot.command()
 async def invite(ctx):
@@ -25,27 +15,27 @@ async def invite(ctx):
     """
     embed = discord.Embed(title=f"", color=0xff9214)
     embed.add_field(name="**Invitación**", value=f"[Haz click aquí para obtener el enlace.](<{discord.utils.oauth_url(bot.user.id)}>)")
-    embed.set_footer(text=f"{PyBot} fue creado por Hatchens.com y es la nueva versión de Auguste.")
+    embed.set_footer(text=f"{bot.user.name} fue creado por Chivito y es la nueva versión de Noulo.")
     await ctx.send(f"{ctx.author.mention}", embed=embed)
 
 @bot.command()
 async def ping(ctx):
+    """
+    Muestra el ping del bot
+    """
     await ctx.send(f'**Pong! In {round(bot.latency * 1000)} ms**')
 
-
 @bot.command()
-@commands.is_owner()
-async def reload(ctx, cog: str):
+async def hug(ctx, user: discord.Member = None):
     """
-    Comando con el propósito de ser utilizado solo por el desarrollador.
+    Mandas un abrazo a otra persona.
     """
-    bot.add_cog(is_owner(bot))
 
-    try:
-        bot.unload_extension(cog)
-        bot.load_extension(cog)
-    except Exception as error:
-        await ctx.send("> No se puso reiniciar cog, **error:**\n".format(error))
+    if user is not None:
+        embed = discord.Embed(title=f"", description='Abrazito', color=discord.Color.purple())
+        embed.add_field(name="Nombre de usuario", value=f"{user.name}")
+        embed.add_field(name="Fue abrazadó por", value=f"`{ctx.author}`")
+        await ctx.send(embed=embed)
 
 
 @bot.command()
@@ -60,6 +50,9 @@ async def tururun(ctx):
 
 @bot.command()
 async def suma(ctx, numOne: int, numTwo: int):
+    """
+    Realiza un suma sencilla
+    """
     await ctx.send(numOne+numTwo)
 
 
@@ -71,9 +64,17 @@ async def test(ctx, *, args):
 
 @bot.command()
 async def info(ctx):
+    """
+    Muestra la informacion del server
+    """
+    created = ctx.guild.created_at
+    created = created.strftime("%x")
+    time = datetime.datetime.utcnow()
+    hour = time.strftime("%X")
+
     embed = discord.Embed(title=f"{ctx.guild.name}", color=discord.Color.blue())
-    embed.add_field(name="Server Time", value=datetime.datetime.utcnow())
-    embed.add_field(name="Server created at", value=f"{ctx.guild.created_at}")
+    embed.add_field(name="Server Time", value=f"{hour}")
+    embed.add_field(name="Server created at", value=f"{created}")
     embed.add_field(name="Server Owner", value=f"{ctx.guild.owner}")
     embed.add_field(name="Server Region", value=f"{ctx.guild.region}")
     embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
@@ -82,15 +83,6 @@ async def info(ctx):
     print(url)
 
     await ctx.send(embed=embed)
-
-
-@bot.command()
-async def youtube(ctx, *, search):
-    query_String = parse.urlencode({'search_querry': search})
-    html_content = request.urlopen('http://www.youtube.com/results?'+query_String)
-    search_results = re.findall('href=\"\\/watch\\?v=(.{11})', html_content.read().decode())
-    # print(search_results)
-    await ctx.send('https://www.youtube.com/watch?v=' + search_results[0])
 
 
 @bot.event
@@ -103,7 +95,7 @@ async def my_message(message): pass
 
 bot.add_listener(my_message, 'busy_message')
 
-bot.run('Njg4MjkyNTUxMjExNzQ1Mjgw.XmyMZA.PARA7nTVgjJVp2DUQAPVEpM3UoM')
+bot.run(os.getenv("TOKEN"))
 
 
 # https://discordapp.com/developers/applications/688292551211745280/oauth2s

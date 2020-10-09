@@ -4,7 +4,7 @@ import datetime
 from urllib import parse, request
 import re
 import os
-from boto.s3.connection import S3Connection
+#from boto.s3.connection import S3Connection
  
 
 

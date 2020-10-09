@@ -39,6 +39,11 @@ async def hug(ctx, user: discord.Member = None):
 
 
 @bot.command()
+async def turun(ctx, channel: discord.VoiceChannel = None ):
+    if channel is not None:
+        await channel.connect( timeout=60.0, reconnect=True ,cls=<class'discord.voice_client.VoiceClient'>)
+
+@bot.command()
 async def tururun(ctx):
     """
     Te desconecta si estas en un Voice Channel.

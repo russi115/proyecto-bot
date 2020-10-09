@@ -1,0 +1,14 @@
+aiohttp==3.6.2
+asgiref==3.2.10
+async-timeout==3.0.1
+attrs==20.2.0
+chardet==3.0.4
+discord.py==1.4.1
+Django==3.1.1
+django-rest-framework==0.1.0
+djangorestframework==3.11.1
+idna==2.10
+multidict==4.7.6
+pytz==2020.1
+sqlparse==0.3.1
+yarl==1.5.1

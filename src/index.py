@@ -40,12 +40,12 @@ async def hug(ctx, user: discord.Member = None):
         embed.add_field(name="Fue abrazadó por", value=f"`{ctx.author}`")
         await ctx.send(embed=embed)
 
-
+"""
 @bot.command()
 async def turun(ctx, channel: discord.VoiceChannel = None ):
     if channel is not None:
         await channel.connect( timeout=60.0, reconnect=True ,cls=<class'discord.voice_client.VoiceClient'>)
-
+"""
 @bot.command()
 async def tururun(ctx):
     """

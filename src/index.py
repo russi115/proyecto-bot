@@ -92,6 +92,34 @@ async def info(ctx):
     await ctx.send(embed=embed)
 
 
+@bot.command()
+async def muteall(ctx, channel : discord.VoiceChannel = None):
+    if channel:
+        if ctx.author in channel.members:
+            for member in channel.members:
+                if not member.bot:
+                    if not member.voice.mute:
+                        await member.edit(mute=True)
+
+@bot.command()
+async def desmuteall(ctx, channel : discord.VoiceChannel = None):
+    if channel:
+        for member in channel.members:
+            if not member.bot:
+                if member.voice.mute:
+                    await member.edit(mute=False)
+
+@bot.command()
+async def join(ctx, Channel: discord.VoiceChannel = None):
+    if Channel:
+        await ctx.guild.change_voice_state(channel = Channel, self_mute=False, self_deaf=False)
+
+@bot.command()
+async def disconnect(ctx):
+    await ctx.guild.change_voice_state(channel = None, self_mute=False, self_deaf=False)
+
+
+
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Depresion Postparto"))

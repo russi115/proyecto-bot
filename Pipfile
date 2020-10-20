@@ -10,6 +10,7 @@ discord-py = "*"
 "discord.py" = "*"
 django = "*"
 django-rest-framework = "*"
+lavalink = "*"
 
 [requires]
 python_version = "3.8"

@@ -39,12 +39,7 @@ async def hug(ctx, user: discord.Member = None):
         embed.add_field(name="Fue abrazadó por", value=f"`{ctx.author}`")
         await ctx.send(embed=embed)
 
-"""
-@bot.command()
-async def turun(ctx, channel: discord.VoiceChannel = None ):
-    if channel is not None:
-        await channel.connect( timeout=60.0, reconnect=True ,cls=<class'discord.voice_client.VoiceClient'>)
-"""
+
 @bot.command()
 async def tururun(ctx):
     """
@@ -54,6 +49,10 @@ async def tururun(ctx):
     print(ctx.author, "leave the vc")
     return await ctx.send("See You later!")
 
+@bot.command()
+async def turun(ctx, channel: discord.VoiceChannel = None):
+    if channel:
+        await ctx.author.edit(voice_channel = channel)
 
 @bot.command()
 async def suma(ctx, numOne: int, numTwo: int):
@@ -94,6 +93,9 @@ async def info(ctx):
 
 @bot.command()
 async def muteall(ctx, channel : discord.VoiceChannel = None):
+    """
+    Mutea a todos en un vc. 
+    """
     if channel:
         if ctx.author in channel.members:
             for member in channel.members:
@@ -103,6 +105,9 @@ async def muteall(ctx, channel : discord.VoiceChannel = None):
 
 @bot.command()
 async def desmuteall(ctx, channel : discord.VoiceChannel = None):
+    """
+    Desmutea a todos en un vc. 
+    """
     if channel:
         for member in channel.members:
             if not member.bot:
@@ -110,12 +115,18 @@ async def desmuteall(ctx, channel : discord.VoiceChannel = None):
                     await member.edit(mute=False)
 
 @bot.command()
-async def join(ctx, Channel: discord.VoiceChannel = None):
+async def joinin(ctx, *, Channel: discord.VoiceChannel = None):
+    """
+    Otro comando para que el bot se una a un vc.
+    """
     if Channel:
         await ctx.guild.change_voice_state(channel = Channel, self_mute=False, self_deaf=False)
 
 @bot.command()
 async def disconnect(ctx):
+    """
+    El bot se desconectara del vc.
+    """
     await ctx.guild.change_voice_state(channel = None, self_mute=False, self_deaf=False)
 
 
@@ -124,12 +135,15 @@ async def disconnect(ctx):
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Depresion Postparto"))
     print('MyBot isready')
+    bot.load_extension('cogs.music')
+
 
 
 async def my_message(message): pass
 
 bot.add_listener(my_message, 'busy_message')
 
+#bot.run('Njg4ODg0NzYwODM1MTI5MzQ3.Xm6z7Q.FHY3HWhTZh-nnHUU7gyxnS_JLfI')
 bot.run(os.getenv("TOKEN"))
 
 

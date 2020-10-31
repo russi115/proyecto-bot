@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from urllib import parse, request
 import requests as rq
-import simplejson as json
 
 bot = commands.Bot(command_prefix='$', description="this is a helper bot")
 

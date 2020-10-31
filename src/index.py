@@ -4,8 +4,8 @@ import datetime
 from urllib import parse, request
 import re
 import os
- 
-
+import requests as rq
+import simplejson as json
 
 bot = commands.Bot(command_prefix='$', description="this is a helper bot")
 
@@ -130,20 +130,18 @@ async def disconnect(ctx):
     await ctx.guild.change_voice_state(channel = None, self_mute=False, self_deaf=False)
 
 
-
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Depresion Postparto"))
     print('MyBot isready')
-    bot.load_extension('cogs.music')
-
+    #bot.load_extension('cogs.music')  
+    bot.load_extension('cogs.goodreads')
 
 
 async def my_message(message): pass
 
 bot.add_listener(my_message, 'busy_message')
 
-#bot.run('Njg4ODg0NzYwODM1MTI5MzQ3.Xm6z7Q.FHY3HWhTZh-nnHUU7gyxnS_JLfI')
 bot.run(os.getenv("TOKEN"))
 
 

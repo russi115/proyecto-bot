@@ -122,19 +122,21 @@ async def joinin(ctx, *, Channel: discord.VoiceChannel = None):
     if Channel:
         await ctx.guild.change_voice_state(channel = Channel, self_mute=False, self_deaf=False)
 
+"""
 @bot.command()
 async def disconnect(ctx):
-    """
+    
     El bot se desconectara del vc.
-    """
+    
     await ctx.guild.change_voice_state(channel = None, self_mute=False, self_deaf=False)
+    """
 
 
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Depresion Postparto"))
     print('MyBot isready')
-    #bot.load_extension('cogs.music')  
+    bot.load_extension('cogs.music')  
     bot.load_extension('cogs.goodreads')
 
 

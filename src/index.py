@@ -5,6 +5,8 @@ from urllib import parse, request
 import re
 import os
 import requests as rq
+import idna_ssl
+
 
 
 bot = commands.Bot(command_prefix='$', description="this is a helper bot")

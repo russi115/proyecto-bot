@@ -5,7 +5,6 @@ from discord import utils
 from discord import Embed 
 import re
 
-
 url_rx = re.compile(r'https?://(?:www\.)?.+')
 class MusicCog(commands.Cog):
     def __init__(self, bot):
@@ -27,8 +26,7 @@ class MusicCog(commands.Cog):
      
         #member = utils.find(lambda m: m.id == ctx.author.id, ctx.guild.members)
         
-
-    @commands.command(name='play')
+    @commands.command(aliases=['play','p'])
     async def play(self, ctx, *, query):
         try:
             member = ctx.author
@@ -41,32 +39,53 @@ class MusicCog(commands.Cog):
             try:
                 player = self.bot.music.player_manager.get(ctx.guild.id)
                 query = query.strip('<>')
-
+                embed = Embed(color=discord.Color.blurple())
                 if not url_rx.match(query):
                     query =f'ytsearch:{query}'
                     print('is not a link')
-                results = await player.node.get_tracks(query)
+                    results = await player.node.get_tracks(query)
+
+                    tracks = results['tracks'][0:10] 
+                    i = 0
+                    query_result = ''
+                    for track in tracks:
+                        i +=+1
+                        query_result = query_result + f'{i}) {track["info"]["title"]} - {track["info"]["uri"]}\n'
+                    embed.description = query_result
+                    await ctx.channel.send(embed=embed)
+
+                    def check(m):
+                        return m.author.id == ctx.author.id
+
+                    response = await self.bot.wait_for('message', check=check)
+                    track = tracks[int(response.content)-1]
+
+                    player.add(requester=ctx.author.id, track=track)
+                    embed =Embed(color=discord.Color.blurple())
+                    embed.title = 'Track Enqueued'
+                    embed.description = f'[{track["info"]["title"]}]({track["info"]["uri"]})'
+                    await ctx.send(embed=embed)
+                    if not player.is_playing:
+                        await player.play()
+
                 if not results or not results['tracks']:
                     return await ctx.send('Nothing found!')
-                
-                embed = Embed(color=discord.Color.blurple())
-
 
                 if results['loadType'] == 'PLAYLIST_LOADED':
                     tracks = results['tracks'] 
                     for track in tracks:
                         player.add(requester=ctx.author.id, track=track)    
                     embed.title = 'Playlist Enqueued!'
-                    embed.description = f'{results["playlistInfo"]["name"]} - {len(tracks)} tracks'
+                    embed.description = f'{results["playlistInfo"]["aliases"]} - {len(tracks)} tracks'
+                    await ctx.channel.send(embed=embed)
 
                 elif results['loadType'] == 'TRACK_LOADED':
                     track = results['tracks'][0]
                     player.add(requester=ctx.author.id, track=track)
                     embed.title = 'Track Enqueued'
                     embed.description = f'[{track["info"]["title"]}]({track["info"]["uri"]})'
+                    await ctx.channel.send(embed=embed)
                     
-                await ctx.channel.send(embed=embed)       
-
                 if not player.is_playing:
                     await player.play()  
 
@@ -76,26 +95,26 @@ class MusicCog(commands.Cog):
         except Exception as error:
             print(error)
 
-    @commands.command(name='stop')
+    @commands.command(aliases=['stop','s'])
     async def stop(self, ctx):
         player = self.bot.music.player_manager.get(ctx.guild.id)
         if player.is_playing:
             await player.set_pause(True)
 
-    @commands.command(name='skip')
+    @commands.command(aliases=['skip','sk'])
     async def skip(self, ctx):
         player = self.bot.music.player_manager.get(ctx.guild.id)
         if player.is_playing:
             await player.skip()
             await ctx.send('Skiped current song!')
 
-    @commands.command(name='resume')
+    @commands.command(aliases=['resume','r'])
     async def resume(self, ctx):
          player = self.bot.music.player_manager.get(ctx.guild.id)
          if player.paused:
              await player.set_pause(False)
 
-    @commands.command(name='queue')
+    @commands.command(aliases=['queue','q'])
     async def queue(self, ctx):
         player = self.bot.music.player_manager.get(ctx.guild.id)
         queue = player.queue
@@ -108,7 +127,7 @@ class MusicCog(commands.Cog):
             i+=1
         await ctx.channel.send(embed=embed)
         
-    @commands.command(name='np')
+    @commands.command(aliases=['np'])
     async def np(self, ctx):
         player = self.bot.music.player_manager.get(ctx.guild.id)
         embed = Embed(color=discord.Color.blurple())
@@ -138,7 +157,6 @@ class MusicCog(commands.Cog):
         # Disconnect from the voice channel.
         await self.connect_to(ctx.guild.id, None)
         await ctx.send('* | Disconnected.')
-
 
     async def track_hook(self, event):
         if isinstance(event, lavalink.events.QueueEndEvent):

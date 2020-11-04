@@ -5144,4 +5144,6 @@ Caused by: java.net.SocketTimeoutException: connect timed out
 2020-11-02 09:35:43.870  INFO 46198 --- [XNIO-1 I/O-1] lavalink.server.io.SocketServer          : Connection closed from /127.0.0.1:36060 with status CloseStatus[code=1006, reason=] -- Session can be resumed within the next 60 seconds with key music-node
 2020-11-02 09:35:44.061  INFO 46198 --- [Thread-1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
 2020-11-02 09:35:44.363  INFO 46198 --- [Thread-1] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring disabled.
-2020-11-02 09:35:44.497  INFO 46198 --- [Thread-1] io.undertow.servlet                      : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2020-11-02 09:35:44.497  INFO 46198 --- [Thread-1] io.undertow.servlet       
+
+puta               : Destroying Spring FrameworkServlet 'dispatcherServlet'

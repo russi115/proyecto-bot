@@ -135,7 +135,7 @@ async def disconnect(ctx):
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Depresion Postparto"))
     print('MyBot isready')
-    bot.load_extension('cogs.music')  
+    #bot.load_extension('cogs.music')  
     bot.load_extension('cogs.goodreads')
 
 

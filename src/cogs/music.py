@@ -1,7 +1,6 @@
 from discord.ext import commands
 import discord
 import lavalink
-import idna_ssl
 from discord import utils
 from discord import Embed 
 import re
